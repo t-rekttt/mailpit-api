@@ -446,7 +446,7 @@ class MailpitClient {
   // Testing
   public async renderMessageHTML(id: string): Promise<string> {
     try {
-      const response = await this.axiosInstance.put<string>(`/view/${id}.html`, {});
+      const response = await this.axiosInstance.get<string>(`/view/${id}.html`);
       return response.data;
     } catch (error) {
       throw new Error(this.handleAxiosError(error as AxiosError));
@@ -455,7 +455,7 @@ class MailpitClient {
 
   public async renderMessageText(id: string): Promise<string> {
     try {
-      const response = await this.axiosInstance.put<string>(`/view/${id}.txt`, {});
+      const response = await this.axiosInstance.get<string>(`/view/${id}.txt`);
       return response.data;
     } catch (error) {
       throw new Error(this.handleAxiosError(error as AxiosError));
