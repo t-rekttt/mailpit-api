@@ -2,7 +2,8 @@
   "name": "mailpit-api",
   "version": "1.0.0",
   "description": "A NodeJS client library, written in TypeScript, to interact with the Mailpit API.",
-  "main": "index.js",
+  "repository": "https://github.com/mpspahr/mailpit-api/blob/main/src/index.ts",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
@@ -24,7 +25,16 @@
     "axios": "^1.7.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.8.0",
     "@types/node": "^20.14.10",
-    "typescript": "^5.5.3"
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.17.0",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.8.0",
+    "prettier": "3.3.3",
+    "tsx": "^4.16.2",
+    "typescript-eslint": "^7.17.0"
   }
 }
