@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosError } from "axios";
+import axios, { AxiosInstance } from "axios";
 
 interface MailpitInfo {
   Database: string;
@@ -254,23 +254,24 @@ class MailpitClient {
       const response = await request();
       return response.data;
     } catch (error) {
-      throw new Error(this.handleAxiosError(error as AxiosError));
-    }
-  }
-
-  private handleAxiosError(error: AxiosError): string {
-    if (error.response) {
-      // Server responded with a status other than 2xx
-      console.error("Error Response:", error.response.data);
-      return `Mailpit API Error: ${error.response.status} ${error.response.statusText}`;
-    } else if (error.request) {
-      // Request was made but no response was received
-      console.error("Error Request:", error.request);
-      return "Mailpit API Error: No response received from server.";
-    } else {
-      // Something happened in setting up the request
-      console.error("Error Message:", error.message);
-      return `Mailpit API Error: ${error.message}`;
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          // Server responded with a status other than 2xx
+          throw new Error(
+            `Mailpit API Error: ${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`,
+          );
+        } else if (error.request) {
+          // Request was made but no response was received
+          throw new Error(
+            "Mailpit API Error: No response received from server.",
+          );
+        } else {
+          // Something happened in setting up the request
+          throw new Error(`Mailpit API Error: ${error.message}`);
+        }
+      } else {
+        throw new Error("Unexpected Error: " + error);
+      }
     }
   }
 
