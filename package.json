@@ -1,12 +1,13 @@
 {
   "name": "mailpit-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A NodeJS client library, written in TypeScript, to interact with the Mailpit API.",
   "repository": {
     "type": "git",
     "url": "https://github.com/mpspahr/mailpit-api.git"
   },
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"TODO: Add tests\" && exit 0",
     "build": "tsc"
