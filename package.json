@@ -4,7 +4,7 @@
   "description": "A NodeJS client library, written in TypeScript, to interact with the Mailpit API.",
   "repository": {
     "type": "git",
-    "url": "git@github.com:mpspahr/mailpit-api.git"
+    "url": "https://github.com/mpspahr/mailpit-api.git"
   },
   "main": "index.ts",
   "scripts": {
