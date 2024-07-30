@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-interface MailpitInfo {
+export interface MailpitInfo {
   Database: string;
   DatabaseSize: number;
   LatestVersion: string;
@@ -21,7 +21,7 @@ interface MailpitInfo {
   Version: string;
 }
 
-interface MailpitConfiguration {
+export interface MailpitConfiguration {
   DuplicatesIgnored: boolean;
   Label: string;
   SpamAssassin: boolean;
@@ -33,7 +33,7 @@ interface MailpitConfiguration {
   };
 }
 
-interface MailpitMessageSummary {
+export interface MailpitMessageSummary {
   Attachments: [
     {
       ContentID: string;
@@ -91,15 +91,15 @@ interface MailpitMessageSummary {
   ];
 }
 
-interface MailpitMessagesSummary {
+export interface MailpitMessagesSummary {
   messages: [MailpitMessageSummary];
 }
 
-interface MailpitMessageHeaders {
+export interface MailpitMessageHeaders {
   [key: string]: string;
 }
 
-interface MailpitSendRequest {
+export interface MailpitSendRequest {
   Attachments: [
     {
       Content: string;
@@ -138,11 +138,11 @@ interface MailpitSendRequest {
   ];
 }
 
-interface MailpitSendMessageConfirmation {
+export interface MailpitSendMessageConfirmation {
   ID: string;
 }
 
-interface MailpitHTMLCheckResponse {
+export interface MailpitHTMLCheckResponse {
   Platforms: {
     [key: string]: [string];
   };
@@ -185,7 +185,7 @@ interface MailpitHTMLCheckResponse {
   ];
 }
 
-interface MailpitLinkCheckResponse {
+export interface MailpitLinkCheckResponse {
   Errors: number;
   Links: [
     {
@@ -196,7 +196,7 @@ interface MailpitLinkCheckResponse {
   ];
 }
 
-interface MailpitSpamAssassinResponse {
+export interface MailpitSpamAssassinResponse {
   Errors: number;
   IsSpam: boolean;
   Rules: [
@@ -209,33 +209,33 @@ interface MailpitSpamAssassinResponse {
   Score: number;
 }
 
-interface MailpitReadStatusRequest {
+export interface MailpitReadStatusRequest {
   IDs: [string];
   Read: boolean;
 }
 
-interface MailpitDeleteRequest {
+export interface MailpitDeleteRequest {
   IDs: [string];
 }
 
-interface MailpitSearch {
+export interface MailpitSearch {
   query: string;
   start: number;
   limit: number;
   tz: string;
 }
 
-interface MailpitSearchDelete {
+export interface MailpitSearchDelete {
   query: string;
   tz: string;
 }
 
-interface MailpitSetTagsRequest {
+export interface MailpitSetTagsRequest {
   IDs: [string];
   Tags: [string];
 }
 
-class MailpitClient {
+export class MailpitClient {
   private axiosInstance: AxiosInstance;
 
   constructor(baseURL: string) {
