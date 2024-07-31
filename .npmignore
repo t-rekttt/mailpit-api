@@ -3,3 +3,4 @@ node_modules
 .prettierrc
 eslint.config.mjs
 .github/
+fixup_type
