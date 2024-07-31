@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-export interface MailpitInfo {
+export interface MailpitInfoResponse {
   Database: string;
   DatabaseSize: number;
   LatestVersion: string;
@@ -21,7 +21,7 @@ export interface MailpitInfo {
   Version: string;
 }
 
-export interface MailpitConfiguration {
+export interface MailpitConfigurationResponse {
   DuplicatesIgnored: boolean;
   Label: string;
   SpamAssassin: boolean;
@@ -33,7 +33,7 @@ export interface MailpitConfiguration {
   };
 }
 
-export interface MailpitMessageSummary {
+export interface MailpitMessageSummaryResponse {
   Attachments: [
     {
       ContentID: string;
@@ -91,11 +91,11 @@ export interface MailpitMessageSummary {
   ];
 }
 
-export interface MailpitMessagesSummary {
-  messages: [MailpitMessageSummary];
+export interface MailpitMessagesSummaryResponse {
+  messages: [MailpitMessageSummaryResponse];
 }
 
-export interface MailpitMessageHeaders {
+export interface MailpitMessageHeadersResponse {
   [key: string]: string;
 }
 
@@ -138,7 +138,7 @@ export interface MailpitSendRequest {
   ];
 }
 
-export interface MailpitSendMessageConfirmation {
+export interface MailpitSendMessageConfirmationResponse {
   ID: string;
 }
 
@@ -218,16 +218,16 @@ export interface MailpitDeleteRequest {
   IDs: [string];
 }
 
-export interface MailpitSearch {
+export interface MailpitSearchRequest {
   query: string;
-  start: number;
-  limit: number;
-  tz: string;
+  start?: number;
+  limit?: number;
+  tz?: string;
 }
 
-export interface MailpitSearchDelete {
+export interface MailpitSearchDeleteRequest {
   query: string;
-  tz: string;
+  tz?: string;
 }
 
 export interface MailpitSetTagsRequest {
@@ -276,27 +276,33 @@ export class MailpitClient {
   }
 
   // Message
-  public async getInfo(): Promise<MailpitInfo> {
+  public async getInfo(): Promise<MailpitInfoResponse> {
     return this.handleRequest(() =>
-      this.axiosInstance.get<MailpitInfo>("/api/v1/info"),
+      this.axiosInstance.get<MailpitInfoResponse>("/api/v1/info"),
     );
   }
 
-  public async getConfiguration(): Promise<MailpitConfiguration> {
+  public async getConfiguration(): Promise<MailpitConfigurationResponse> {
     return this.handleRequest(() =>
-      this.axiosInstance.get<MailpitConfiguration>("/api/v1/webui"),
+      this.axiosInstance.get<MailpitConfigurationResponse>("/api/v1/webui"),
     );
   }
 
-  public async getMessageSummary(id: string): Promise<MailpitMessageSummary> {
+  public async getMessageSummary(
+    id: string = "latest",
+  ): Promise<MailpitMessageSummaryResponse> {
     return this.handleRequest(() =>
-      this.axiosInstance.get<MailpitMessageSummary>(`/api/v1/message/${id}`),
+      this.axiosInstance.get<MailpitMessageSummaryResponse>(
+        `/api/v1/message/${id}`,
+      ),
     );
   }
 
-  public async getMessageHeaders(id: string): Promise<MailpitMessageHeaders> {
+  public async getMessageHeaders(
+    id: string = "latest",
+  ): Promise<MailpitMessageHeadersResponse> {
     return this.handleRequest(() =>
-      this.axiosInstance.get<MailpitMessageHeaders>(
+      this.axiosInstance.get<MailpitMessageHeadersResponse>(
         `/api/v1/message/${id}/headers`,
       ),
     );
@@ -311,7 +317,7 @@ export class MailpitClient {
     );
   }
 
-  public async getMessageSource(id: string): Promise<string> {
+  public async getMessageSource(id: string = "latest"): Promise<string> {
     return this.handleRequest(() =>
       this.axiosInstance.get<string>(`/api/v1/message/${id}/raw`),
     );
@@ -342,9 +348,9 @@ export class MailpitClient {
 
   public async sendMessage(
     sendReqest: MailpitSendRequest,
-  ): Promise<MailpitSendMessageConfirmation> {
+  ): Promise<MailpitSendMessageConfirmationResponse> {
     return this.handleRequest(() =>
-      this.axiosInstance.post<MailpitSendMessageConfirmation>(
+      this.axiosInstance.post<MailpitSendMessageConfirmationResponse>(
         `/api/v1/send`,
         sendReqest,
       ),
@@ -352,7 +358,9 @@ export class MailpitClient {
   }
 
   // Other
-  public async htmlCheck(id: string): Promise<MailpitHTMLCheckResponse> {
+  public async htmlCheck(
+    id: string = "latest",
+  ): Promise<MailpitHTMLCheckResponse> {
     return this.handleRequest(() =>
       this.axiosInstance.get<MailpitHTMLCheckResponse>(
         `/api/v1/message/${id}/html-check`,
@@ -360,16 +368,20 @@ export class MailpitClient {
     );
   }
 
-  public async linkCheck(id: string): Promise<MailpitLinkCheckResponse> {
+  public async linkCheck(
+    id: string = "latest",
+    follow: "true" | "false" = "false",
+  ): Promise<MailpitLinkCheckResponse> {
     return this.handleRequest(() =>
       this.axiosInstance.get<MailpitLinkCheckResponse>(
         `/api/v1/message/${id}/link-check`,
+        { params: { follow } },
       ),
     );
   }
 
   public async spamAssassinCheck(
-    id: string,
+    id: string = "latest",
   ): Promise<MailpitSpamAssassinResponse> {
     return this.handleRequest(() =>
       this.axiosInstance.get<MailpitSpamAssassinResponse>(
@@ -379,9 +391,15 @@ export class MailpitClient {
   }
 
   // Messages
-  public async listMessages(): Promise<MailpitMessagesSummary> {
+  public async listMessages(
+    start: number = 0,
+    limit: number = 50,
+  ): Promise<MailpitMessagesSummaryResponse> {
     return this.handleRequest(() =>
-      this.axiosInstance.get<MailpitMessagesSummary>(`/api/v1/messages`),
+      this.axiosInstance.get<MailpitMessagesSummaryResponse>(
+        `/api/v1/messages`,
+        { params: { start, limit } },
+      ),
     );
   }
 
@@ -405,16 +423,18 @@ export class MailpitClient {
 
   // See https://mailpit.axllent.org/docs/usage/search-filters/
   public async searchMessages(
-    search: MailpitSearch,
-  ): Promise<MailpitMessagesSummary> {
+    search: MailpitSearchRequest,
+  ): Promise<MailpitMessagesSummaryResponse> {
     return this.handleRequest(() =>
-      this.axiosInstance.put<MailpitMessagesSummary>(`/api/v1/search`, search),
+      this.axiosInstance.get<MailpitMessagesSummaryResponse>(`/api/v1/search`, {
+        params: search,
+      }),
     );
   }
 
   // See https://mailpit.axllent.org/docs/usage/search-filters/
   public async deleteMessagesBySearch(
-    search: MailpitSearchDelete,
+    search: MailpitSearchDeleteRequest,
   ): Promise<string> {
     return this.handleRequest(() =>
       this.axiosInstance.delete<string>(`/api/v1/search`, { data: search }),
@@ -451,13 +471,13 @@ export class MailpitClient {
   }
 
   // Testing
-  public async renderMessageHTML(id: string): Promise<string> {
+  public async renderMessageHTML(id: string = "latest"): Promise<string> {
     return this.handleRequest(() =>
       this.axiosInstance.get<string>(`/view/${id}.html`),
     );
   }
 
-  public async renderMessageText(id: string): Promise<string> {
+  public async renderMessageText(id: string = "latest"): Promise<string> {
     return this.handleRequest(() =>
       this.axiosInstance.get<string>(`/view/${id}.txt`),
     );
