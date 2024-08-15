@@ -92,7 +92,51 @@ export interface MailpitMessageSummaryResponse {
 }
 
 export interface MailpitMessagesSummaryResponse {
-  messages: [MailpitMessageSummaryResponse];
+  messages: [
+    {
+      Attachments: number;
+      Size: number;
+      Snippet: string;
+      Subject: string;
+      Tags: [string];
+      ID: string;
+      MessageID: string;
+      Read: boolean;
+      Bcc: [
+        {
+          Address: string;
+          Name: string;
+        },
+      ];
+      Cc: [
+        {
+          Address: string;
+          Name: string;
+        },
+      ];
+      From: {
+        Address: string;
+        Name: string;
+      };
+      ReplyTo: [
+        {
+          Address: string;
+          Name: string;
+        },
+      ];
+      To: [
+        {
+          Address: string;
+          Name: string;
+        },
+      ];
+    },
+  ];
+  messages_count: number;
+  start: number;
+  tags: [string];
+  total: number;
+  unread: number;
 }
 
 export interface MailpitMessageHeadersResponse {
