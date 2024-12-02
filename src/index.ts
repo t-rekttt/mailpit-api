@@ -481,7 +481,7 @@ export class MailpitClient {
     search: MailpitSearchDeleteRequest,
   ): Promise<string> {
     return this.handleRequest(() =>
-      this.axiosInstance.delete<string>(`/api/v1/search`, { data: search }),
+      this.axiosInstance.delete<string>(`/api/v1/search`, { params: search }),
     );
   }
 
