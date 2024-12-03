@@ -456,7 +456,7 @@ export class MailpitClient {
   }
 
   public async deleteMessages(
-    deleteRequest: MailpitDeleteRequest,
+    deleteRequest?: MailpitDeleteRequest,
   ): Promise<string> {
     return this.handleRequest(() =>
       this.axiosInstance.delete<string>(`/api/v1/messages`, {
