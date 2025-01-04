@@ -34,27 +34,21 @@ export interface MailpitConfigurationResponse {
 }
 
 export interface MailpitMessageSummaryResponse {
-  Attachments: [
-    {
-      ContentID: string;
-      ContentType: string;
-      FileName: string;
-      PartID: string;
-      Size: number;
-    },
-  ];
-  Bcc: [
-    {
-      Address: string;
-      Name: string;
-    },
-  ];
-  Cc: [
-    {
-      Address: string;
-      Name: string;
-    },
-  ];
+  Attachments: {
+    ContentID: string;
+    ContentType: string;
+    FileName: string;
+    PartID: string;
+    Size: number;
+  }[];
+  Bcc: {
+    Address: string;
+    Name: string;
+  }[];
+  Cc: {
+    Address: string;
+    Name: string;
+  }[];
   Date: string;
   From: {
     Address: string;
@@ -62,79 +56,63 @@ export interface MailpitMessageSummaryResponse {
   };
   HTML: string;
   ID: string;
-  Inline: [
-    {
-      ContentID: string;
-      ContentType: string;
-      FileName: string;
-      PartID: string;
-      Size: number;
-    },
-  ];
+  Inline: {
+    ContentID: string;
+    ContentType: string;
+    FileName: string;
+    PartID: string;
+    Size: number;
+  }[];
   MessageID: string;
-  ReplyTo: [
-    {
-      Address: string;
-      Name: string;
-    },
-  ];
+  ReplyTo: {
+    Address: string;
+    Name: string;
+  }[];
   ReturnPath: string;
   Size: number;
   Subject: string;
-  Tags: [string];
+  Tags: string[];
   Text: string;
-  To: [
-    {
-      Address: string;
-      Name: string;
-    },
-  ];
+  To: {
+    Address: string;
+    Name: string;
+  }[];
 }
 
 export interface MailpitMessagesSummaryResponse {
-  messages: [
-    {
-      Attachments: number;
-      Size: number;
-      Snippet: string;
-      Subject: string;
-      Tags: [string];
-      ID: string;
-      MessageID: string;
-      Read: boolean;
-      Bcc: [
-        {
-          Address: string;
-          Name: string;
-        },
-      ];
-      Cc: [
-        {
-          Address: string;
-          Name: string;
-        },
-      ];
-      From: {
-        Address: string;
-        Name: string;
-      };
-      ReplyTo: [
-        {
-          Address: string;
-          Name: string;
-        },
-      ];
-      To: [
-        {
-          Address: string;
-          Name: string;
-        },
-      ];
-    },
-  ];
+  messages: {
+    Attachments: number;
+    Size: number;
+    Snippet: string;
+    Subject: string;
+    Tags: string[];
+    ID: string;
+    MessageID: string;
+    Read: boolean;
+    Bcc: {
+      Address: string;
+      Name: string;
+    }[];
+    Cc: {
+      Address: string;
+      Name: string;
+    }[];
+    From: {
+      Address: string;
+      Name: string;
+    };
+    ReplyTo: {
+      Address: string;
+      Name: string;
+    }[];
+    To: {
+      Address: string;
+      Name: string;
+    }[];
+  }[];
   messages_count: number;
   start: number;
-  tags: [string];
+  tags: string[];
   total: number;
   unread: number;
 }
@@ -144,19 +122,15 @@ export interface MailpitMessageHeadersResponse {
 }
 
 export interface MailpitSendRequest {
-  Attachments: [
-    {
-      Content: string;
-      Filename: string;
-    },
-  ];
-  Bcc: [string];
-  Cc: [
-    {
-      Email: string;
-      Name: string;
-    },
-  ];
+  Attachments: {
+    Content: string;
+    Filename: string;
+  }[];
+  Bcc: string[];
+  Cc: {
+    Email: string;
+    Name: string;
+  }[];
   From: {
     Email: string;
     Name: string;
@@ -165,21 +139,17 @@ export interface MailpitSendRequest {
   Headers: {
     [key: string]: string;
   };
-  ReplyTo: [
-    {
-      Email: string;
-      Name: string;
-    },
-  ];
+  ReplyTo: {
+    Email: string;
+    Name: string;
+  }[];
   Subject: string;
-  Tags: [string];
+  Tags: string[];
   Text: string;
-  To: [
-    {
-      Email: string;
-      Name: string;
-    },
-  ];
+  To: {
+    Email: string;
+    Name: string;
+  }[];
 }
 
 export interface MailpitSendMessageConfirmationResponse {
@@ -197,69 +167,61 @@ export interface MailpitHTMLCheckResponse {
     Tests: number;
     Unsupported: number;
   };
-  Warnings: [
-    {
-      Category: "css" | "html";
-      Description: string;
-      Keywords: string;
-      NotesByNumber: {
-        [key: string]: string;
-      };
-      Results: [
-        {
-          Family: string;
-          Name: string;
-          NoteNumber: string;
-          Platform: string;
-          Support: "yes" | "no" | "partial";
-          Version: string;
-        },
-      ];
-      Score: {
-        Found: number;
-        Partial: number;
-        Supported: number;
-        Unsupported: number;
-      };
-      Slug: string;
-      Tags: [string];
-      Title: string;
-      URL: string;
-    },
-  ];
+  Warnings: {
+    Category: "css" | "html";
+    Description: string;
+    Keywords: string;
+    NotesByNumber: {
+      [key: string]: string;
+    };
+    Results: {
+      Family: string;
+      Name: string;
+      NoteNumber: string;
+      Platform: string;
+      Support: "yes" | "no" | "partial";
+      Version: string;
+    }[];
+    Score: {
+      Found: number;
+      Partial: number;
+      Supported: number;
+      Unsupported: number;
+    };
+    Slug: string;
+    Tags: string[];
+    Title: string;
+    URL: string;
+  }[];
 }
 
 export interface MailpitLinkCheckResponse {
   Errors: number;
-  Links: [
-    {
-      Status: string;
-      StatusCode: number;
-      URL: string;
-    },
-  ];
+  Links: {
+    Status: string;
+    StatusCode: number;
+    URL: string;
+  }[];
 }
 
 export interface MailpitSpamAssassinResponse {
   Errors: number;
   IsSpam: boolean;
-  Rules: [
-    {
-      Description: string;
-      Name: string;
-      Score: number;
-    },
-  ];
+  Rules: {
+    Description: string;
+    Name: string;
+    Score: number;
+  }[];
   Score: number;
 }
 
 export interface MailpitReadStatusRequest {
-  IDs: [string];
+  IDs: string[];
   Read: boolean;
 }
 
 export interface MailpitDeleteRequest {
-  IDs: [string];
+  IDs: string[];
 }
 
 export interface MailpitSearchRequest {
@@ -275,8 +237,8 @@ export interface MailpitSearchDeleteRequest {
 }
 
 export interface MailpitSetTagsRequest {
-  IDs: [string];
-  Tags: [string];
+  IDs: string[];
+  Tags: string[];
 }
 
 export class MailpitClient {
@@ -486,9 +448,9 @@ export class MailpitClient {
   }
 
   // Tags
-  public async getTags(): Promise<[string]> {
+  public async getTags(): Promise<string[]> {
     return this.handleRequest(() =>
-      this.axiosInstance.get<[string]>(`/api/v1/tags`),
+      this.axiosInstance.get<string[]>(`/api/v1/tags`),
     );
   }
 
