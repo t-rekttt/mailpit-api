@@ -281,7 +281,7 @@ export class MailpitClient {
     }
   }
 
-  // Message
+  // Application
   public async getInfo(): Promise<MailpitInfoResponse> {
     return this.handleRequest(() =>
       this.axiosInstance.get<MailpitInfoResponse>("/api/v1/info"),
@@ -294,6 +294,7 @@ export class MailpitClient {
     );
   }
 
+  // Message
   public async getMessageSummary(
     id: string = "latest",
   ): Promise<MailpitMessageSummaryResponse> {
