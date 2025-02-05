@@ -241,6 +241,36 @@ export interface MailpitSetTagsRequest {
   Tags: string[];
 }
 
+export interface ChaosTriggersRequest {
+  Authentication?: {
+    ErrorCode: number;
+    Probability: number;
+  };
+  Recipient?: {
+    ErrorCode: number;
+    Probability: number;
+  };
+  Sender?: {
+    ErrorCode: number;
+    Probability: number;
+  };
+}
+
+export interface ChaosTriggersResponse {
+  Authentication: {
+    ErrorCode: number;
+    Probability: number;
+  };
+  Recipient?: {
+    ErrorCode: number;
+    Probability: number;
+  };
+  Sender?: {
+    ErrorCode: number;
+    Probability: number;
+  };
+}
+
 export class MailpitClient {
   private axiosInstance: AxiosInstance;
 
@@ -486,6 +516,20 @@ export class MailpitClient {
   public async renderMessageText(id: string = "latest"): Promise<string> {
     return this.handleRequest(() =>
       this.axiosInstance.get<string>(`/view/${id}.txt`),
+    );
+  }
+
+  public async getChaosTriggers(): Promise<ChaosTriggersResponse> {
+    return this.handleRequest(() =>
+      this.axiosInstance.get<ChaosTriggersResponse>("/api/v1/chaos"),
+    );
+  }
+
+  public async setChaosTriggers(
+    triggers: ChaosTriggersRequest = {},
+  ): Promise<ChaosTriggersResponse> {
+    return this.handleRequest(() =>
+      this.axiosInstance.put<ChaosTriggersResponse>("/api/v1/chaos", triggers),
     );
   }
 }
